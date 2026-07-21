@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>GastroGlobe — World Cuisine, One App</title>
+<meta name="description" content="405+ recipes across 21 world cuisines, translated into 15 languages. Weekly meal planner, smart shopping lists, and step-by-step cooking mode." />
+<link rel="icon" type="image/png" href="assets/emblem.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #C24A2E;
+    --premium: #BE9A53;
+    --espresso: #211913;
+    --charcoal: #3D342C;
+    --stone: #8A7E70;
+    --sand: #E6DCC9;
+    --paper: #FAF5EC;
+    --cream: #F3ECDF;
+    --border: #EFE7D6;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--paper);
+    color: var(--charcoal);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  h1, h2, h3, .serif { font-family: 'Playfair Display', Georgia, serif; }
+  a { color: inherit; text-decoration: none; }
+  img { max-width: 100%; display: block; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+
+  /* Header */
+  header {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(250,245,236,0.92);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+  .headerRow { display: flex; align-items: center; justify-content: space-between; padding: 14px 24px; max-width: 1120px; margin: 0 auto; }
+  .brand { display: flex; align-items: center; gap: 10px; }
+  .brand img { width: 36px; height: 36px; }
+  .brand .word { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 20px; }
+  .brand .word b { color: var(--primary); }
+  .headerActions { display: flex; align-items: center; gap: 10px; }
+
+  select#langSwitch {
+    font-family: inherit; font-size: 13px; font-weight: 600;
+    background: #fff; color: var(--charcoal);
+    border: 1.5px solid var(--border); border-radius: 999px;
+    padding: 8px 14px; cursor: pointer;
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-weight: 700; font-size: 14px;
+    padding: 10px 20px; border-radius: 999px;
+    background: var(--primary); color: #fff;
+    box-shadow: 0 4px 14px rgba(194,74,46,0.3);
+    white-space: nowrap;
+  }
+  .btn.small { padding: 8px 16px; font-size: 13px; }
+
+  /* Hero */
+  .hero { padding: 64px 0 40px; }
+  .heroGrid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 48px; align-items: center; }
+  .eyebrow {
+    display: inline-block; font-size: 12.5px; font-weight: 700; letter-spacing: 1.2px;
+    text-transform: uppercase; color: var(--primary);
+    background: rgba(194,74,46,0.08); border-radius: 999px; padding: 6px 14px; margin-bottom: 18px;
+  }
+  .hero h1 { font-size: 46px; font-weight: 800; line-height: 1.12; color: var(--espresso); margin-bottom: 20px; }
+  .hero p.sub { font-size: 17px; color: var(--stone); max-width: 480px; margin-bottom: 28px; }
+  .heroCtas { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 28px; }
+  .soon { font-size: 13px; color: var(--stone); font-weight: 600; }
+  .statRow { display: flex; gap: 32px; flex-wrap: wrap; }
+  .stat b { display: block; font-family: 'Playfair Display', serif; font-size: 28px; color: var(--espresso); }
+  .stat span { font-size: 12.5px; color: var(--stone); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  .heroShots { position: relative; display: flex; justify-content: center; }
+  .phoneFrame {
+    width: 220px; border-radius: 32px; overflow: hidden;
+    box-shadow: 0 30px 60px rgba(33,25,19,0.25);
+    border: 6px solid var(--espresso);
+  }
+  .phoneFrame img { width: 100%; }
+  .phoneFrame.back { position: absolute; left: -30px; top: 60px; width: 190px; opacity: 0.85; transform: rotate(-6deg); z-index: 1; }
+  .phoneFrame.front { position: relative; z-index: 2; transform: rotate(4deg); }
+
+  /* Sections */
+  section { padding: 72px 0; }
+  .sectionHead { text-align: center; max-width: 620px; margin: 0 auto 44px; }
+  .sectionHead h2 { font-size: 32px; color: var(--espresso); margin-bottom: 12px; }
+  .sectionHead p { color: var(--stone); font-size: 15.5px; }
+
+  /* Features */
+  .featGrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+  .featCard {
+    background: #fff; border: 1px solid var(--border); border-radius: 18px;
+    padding: 24px 20px; text-align: left;
+  }
+  .featIcon {
+    width: 44px; height: 44px; border-radius: 12px;
+    background: var(--cream); display: flex; align-items: center; justify-content: center;
+    font-size: 22px; margin-bottom: 14px;
+  }
+  .featCard h3 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 15.5px; font-weight: 700; color: var(--espresso); margin-bottom: 6px; }
+  .featCard p { font-size: 13.5px; color: var(--stone); }
+
+  /* Why / Differentiators */
+  .whyGrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+  .whyCard {
+    background: linear-gradient(160deg, #fff, var(--cream));
+    border: 1.5px solid var(--border); border-radius: 20px;
+    padding: 26px 22px; position: relative;
+  }
+  .whyCard .num {
+    font-family: 'Playfair Display', serif; font-weight: 800; font-size: 15px;
+    color: var(--premium); letter-spacing: 1px; margin-bottom: 10px; display: block;
+  }
+  .whyCard h3 { font-size: 16.5px; font-weight: 800; color: var(--espresso); margin-bottom: 8px; }
+  .whyCard p { font-size: 13.5px; color: var(--stone); }
+
+  /* Languages */
+  .langSection { background: var(--espresso); color: var(--paper); }
+  .langSection .sectionHead h2 { color: #fff; }
+  .langSection .sectionHead p { color: rgba(250,245,236,0.55); }
+  .langGrid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+  .langChip {
+    display: flex; align-items: center; gap: 8px;
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px; padding: 12px 14px; font-size: 13.5px; font-weight: 600;
+  }
+  .langChip .flag { font-size: 18px; }
+
+  /* Cuisines */
+  .cuisineGrid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; }
+  .cuisineChip {
+    background: #fff; border: 1px solid var(--border); border-radius: 14px;
+    padding: 16px 8px; text-align: center;
+  }
+  .cuisineChip .flag { font-size: 26px; margin-bottom: 6px; }
+  .cuisineChip span { font-size: 12px; font-weight: 700; color: var(--charcoal); }
+
+  /* Gallery */
+  .galleryRow {
+    display: flex; gap: 18px; overflow-x: auto; padding: 10px 4px 20px;
+    scroll-snap-type: x mandatory;
+  }
+  .galleryRow img {
+    width: 200px; flex: none; border-radius: 22px; border: 5px solid var(--espresso);
+    scroll-snap-align: center; box-shadow: 0 14px 30px rgba(33,25,19,0.15);
+  }
+
+  /* Premium */
+  .premiumBox {
+    background: linear-gradient(135deg, #2b201a, var(--espresso));
+    border-radius: 28px; padding: 48px; text-align: center;
+    color: #fff; position: relative; overflow: hidden;
+  }
+  .premiumBox::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(circle at 20% 20%, rgba(190,154,83,0.25), transparent 45%);
+  }
+  .premiumBox * { position: relative; }
+  .premiumBox .eyebrow { background: rgba(190,154,83,0.18); color: var(--premium); }
+  .premiumBox h2 { font-size: 30px; margin-bottom: 14px; }
+  .premiumBox p { color: rgba(250,245,236,0.7); max-width: 480px; margin: 0 auto 28px; font-size: 15px; }
+
+  /* Footer */
+  footer { background: var(--espresso); color: rgba(250,245,236,0.55); padding: 48px 0 28px; }
+  .footGrid { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 24px; margin-bottom: 32px; }
+  .footBrand { display: flex; align-items: center; gap: 10px; }
+  .footBrand img { width: 30px; height: 30px; }
+  .footBrand span { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 17px; color: #fff; }
+  .footLinks { display: flex; gap: 24px; flex-wrap: wrap; font-size: 13.5px; }
+  .footLinks a:hover { color: #fff; }
+  .footBottom { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 20px; font-size: 12.5px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+
+  [dir="rtl"] .heroGrid { direction: rtl; }
+  [dir="rtl"] .footGrid, [dir="rtl"] .footBottom { direction: rtl; }
+
+  @media (max-width: 860px) {
+    .heroGrid { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 34px; }
+    .heroShots { margin-top: 20px; }
+    .phoneFrame.back { display: none; }
+    .featGrid { grid-template-columns: repeat(2, 1fr); }
+    .langGrid { grid-template-columns: repeat(3, 1fr); }
+    .cuisineGrid { grid-template-columns: repeat(4, 1fr); }
+    .headerRow .btn span.long { display: none; }
+    .premiumBox { padding: 32px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="headerRow">
+    <div class="brand">
+      <img src="assets/emblem.png" alt="GastroGlobe" />
+      <span class="word">Gastro<b>Globe</b></span>
+    </div>
+    <div class="headerActions">
+      <select id="langSwitch" aria-label="Language"></select>
+      <a class="btn small" id="ctaHeader" href="https://play.google.com/store/apps/details?id=com.gastro.globe" target="_blank" rel="noopener">
+        <span data-i18n="nav_download">Get the App</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap heroGrid">
+    <div>
+      <span class="eyebrow" data-i18n="hero_eyebrow">World Cuisine App</span>
+      <h1 data-i18n="hero_title">Discover the world's kitchens.</h1>
+      <p class="sub" data-i18n="hero_subtitle">405+ recipes across 21 cuisines, translated into 15 languages — with a weekly meal planner, smart shopping lists, and step-by-step cooking mode.</p>
+      <div class="heroCtas">
+        <a class="btn" href="https://play.google.com/store/apps/details?id=com.gastro.globe" target="_blank" rel="noopener">
+          ▶ <span data-i18n="hero_cta_play">Get it on Google Play</span>
+        </a>
+        <span class="soon" data-i18n="hero_cta_soon"> App Store — coming soon</span>
+      </div>
+      <div class="statRow">
+        <div class="stat"><b>405+</b><span data-i18n="stat_recipes">Recipes</span></div>
+        <div class="stat"><b>21</b><span data-i18n="stat_cuisines">Cuisines</span></div>
+        <div class="stat"><b>15</b><span data-i18n="stat_languages">Languages</span></div>
+      </div>
+    </div>
+    <div class="heroShots">
+      <div class="phoneFrame back"><img src="assets/screenshots/3.jpg" alt="Cuisines" /></div>
+      <div class="phoneFrame front"><img src="assets/screenshots/1.jpg" alt="Discover" /></div>
+    </div>
+  </div>
+</section>
+
+<section id="features">
+  <div class="wrap">
+    <div class="sectionHead">
+      <span class="eyebrow" data-i18n="features_eyebrow">Features</span>
+      <h2 data-i18n="features_title">Everything you need in the kitchen</h2>
+      <p data-i18n="features_subtitle">From discovery to the dinner table — one app, every step.</p>
+    </div>
+    <div class="featGrid" id="featGrid"></div>
+  </div>
+</section>
+
+<section id="why">
+  <div class="wrap">
+    <div class="sectionHead">
+      <span class="eyebrow" data-i18n="why_eyebrow">Why GastroGlobe</span>
+      <h2 data-i18n="why_title">Not just another recipe app</h2>
+      <p data-i18n="why_subtitle">Here's what most cooking apps don't do.</p>
+    </div>
+    <div class="whyGrid" id="whyGrid"></div>
+  </div>
+</section>
+
+<section class="langSection">
+  <div class="wrap">
+    <div class="sectionHead">
+      <span class="eyebrow" data-i18n="languages_eyebrow">Localization</span>
+      <h2 data-i18n="languages_title">Speaks your language</h2>
+      <p data-i18n="languages_subtitle">Every recipe — title, ingredients, and every step — fully translated, not machine-guessed.</p>
+    </div>
+    <div class="langGrid" id="langGrid"></div>
+  </div>
+</section>
+
+<section id="cuisines">
+  <div class="wrap">
+    <div class="sectionHead">
+      <span class="eyebrow" data-i18n="cuisines_eyebrow">Around the World</span>
+      <h2 data-i18n="cuisines_title">21 cuisines, one app</h2>
+      <p data-i18n="cuisines_subtitle">From street food to royal palace kitchens.</p>
+    </div>
+    <div class="cuisineGrid" id="cuisineGrid"></div>
+  </div>
+</section>
+
+<section id="gallery">
+  <div class="wrap">
+    <div class="sectionHead">
+      <h2 data-i18n="gallery_title">A closer look</h2>
+    </div>
+  </div>
+  <div class="galleryRow">
+    <img src="assets/screenshots/2.jpg" alt="Collections" loading="lazy" />
+    <img src="assets/screenshots/4.jpg" alt="Chefs" loading="lazy" />
+    <img src="assets/screenshots/5.jpg" alt="Favorites" loading="lazy" />
+    <img src="assets/screenshots/6.jpg" alt="Meal planner" loading="lazy" />
+    <img src="assets/screenshots/7.jpg" alt="Languages" loading="lazy" />
+    <img src="assets/screenshots/8.jpg" alt="Streaks & profile" loading="lazy" />
+  </div>
+</section>
+
+<section id="premium">
+  <div class="wrap">
+    <div class="premiumBox">
+      <span class="eyebrow" data-i18n="premium_eyebrow">Free to start</span>
+      <h2 data-i18n="premium_title">Cook for free. Unlock the full atlas with Premium.</h2>
+      <p data-i18n="premium_desc">A generous set of recipes is free forever in every cuisine. Upgrade to GastroGlobe Premium to unlock the full 405-recipe library, the Royal Palace collection, and every future addition.</p>
+      <a class="btn" href="https://play.google.com/store/apps/details?id=com.gastro.globe" target="_blank" rel="noopener">
+        <span data-i18n="hero_cta_play">Get it on Google Play</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footGrid">
+      <div class="footBrand">
+        <img src="assets/emblem.png" alt="GastroGlobe" />
+        <span>GastroGlobe</span>
+      </div>
+      <div class="footLinks">
+        <a href="privacy.html" data-i18n="footer_privacy">Privacy Policy</a>
+        <a href="terms.html" data-i18n="footer_terms">Terms of Service</a>
+        <a href="mailto:kuzeyfeneri@gmail.com" data-i18n="footer_contact">Contact</a>
+        <a href="https://stmatrix.com.tr" target="_blank" rel="noopener" data-i18n="footer_dev">More apps by stmatrix</a>
+      </div>
+    </div>
+    <div class="footBottom">
+      <span data-i18n="footer_tagline">World cuisine, one app.</span>
+      <span id="footYear"></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+const LANGS = [
+  { code: 'en', label: 'English', flag: '🇬🇧' },
+  { code: 'tr', label: 'Türkçe', flag: '🇹🇷' },
+  { code: 'it', label: 'Italiano', flag: '🇮🇹' },
+  { code: 'fr', label: 'Français', flag: '🇫🇷' },
+  { code: 'es', label: 'Español', flag: '🇪🇸' },
+  { code: 'es-MX', label: 'Español (México)', flag: '🇲🇽' },
+  { code: 'de', label: 'Deutsch', flag: '🇩🇪' },
+  { code: 'pt', label: 'Português', flag: '🇵🇹' },
+  { code: 'zh', label: '中文', flag: '🇨🇳' },
+  { code: 'ja', label: '日本語', flag: '🇯🇵' },
+  { code: 'ko', label: '한국어', flag: '🇰🇷' },
+  { code: 'hi', label: 'हिन्दी', flag: '🇮🇳' },
+  { code: 'th', label: 'ไทย', flag: '🇹🇭' },
+  { code: 'ar', label: 'العربية', flag: '🇸🇦' },
+  { code: 'fil', label: 'Filipino', flag: '🇵🇭' },
+];
+
+const CUISINES = [
+  { flag: '🇹🇷', key: 'tr' }, { flag: '🇮🇹', key: 'it' }, { flag: '🇯🇵', key: 'jp' },
+  { flag: '🇲🇽', key: 'mx' }, { flag: '🇫🇷', key: 'fr' }, { flag: '🇨🇳', key: 'cn' },
+  { flag: '🇮🇳', key: 'in' }, { flag: '🇰🇷', key: 'kr' }, { flag: '🇪🇸', key: 'es' },
+  { flag: '🇹🇭', key: 'th' }, { flag: '🇬🇷', key: 'gr' }, { flag: '🇯🇴', key: 'jo' },
+  { flag: '🇲🇦', key: 'ma' }, { flag: '🇱🇧', key: 'lb' }, { flag: '🇺🇸', key: 'us' },
+  { flag: '🇻🇳', key: 'vn' }, { flag: '🇩🇪', key: 'de' }, { flag: '🇵🇹', key: 'pt' },
+  { flag: '🇬🇪', key: 'ge' }, { flag: '🇵🇭', key: 'ph' }, { flag: '👑', key: 'ot' },
+];
+const CUISINE_NAMES = {
+  en: { tr:'Turkish', it:'Italian', jp:'Japanese', mx:'Mexican', fr:'French', cn:'Chinese', in:'Indian', kr:'Korean', es:'Spanish', th:'Thai', gr:'Greek', jo:'Jordanian', ma:'Moroccan', lb:'Lebanese', us:'American', vn:'Vietnamese', de:'German', pt:'Portuguese', ge:'Georgian', ph:'Filipino', ot:'Royal Palace' },
+  tr: { tr:'Türk', it:'İtalyan', jp:'Japon', mx:'Meksika', fr:'Fransız', cn:'Çin', in:'Hint', kr:'Kore', es:'İspanyol', th:'Tayland', gr:'Yunan', jo:'Ürdün', ma:'Fas', lb:'Lübnan', us:'Amerikan', vn:'Vietnam', de:'Alman', pt:'Portekiz', ge:'Gürcü', ph:'Filipin', ot:'Saray Mutfağı' },
+};
+
+const WHY = [
+  { num: '01', k: 'translate' },
+  { num: '02', k: 'breadth' },
+  { num: '03', k: 'noads' },
+  { num: '04', k: 'workflow' },
+];
+
+const FEATURES = [
+  { icon: '🧭', k: 'discover' },
+  { icon: '📅', k: 'planner' },
+  { icon: '🛒', k: 'shopping' },
+  { icon: '👩‍🍳', k: 'cooking' },
+  { icon: '❤️', k: 'favorites' },
+  { icon: '🥗', k: 'diet' },
+  { icon: '🌍', k: 'lang' },
+  { icon: '🌙', k: 'dark' },
+];
+
+const I18N = {
+  en: {
+    nav_download: 'Get the App',
+    hero_eyebrow: 'World Cuisine App',
+    hero_title: "Discover the world's kitchens.",
+    hero_subtitle: '405+ recipes across 21 cuisines, translated into 15 languages — with a weekly meal planner, smart shopping lists, and step-by-step cooking mode.',
+    hero_cta_play: 'Get it on Google Play',
+    hero_cta_soon: 'App Store — coming soon',
+    stat_recipes: 'Recipes', stat_cuisines: 'Cuisines', stat_languages: 'Languages',
+    features_eyebrow: 'Features',
+    features_title: 'Everything you need in the kitchen',
+    features_subtitle: 'From discovery to the dinner table — one app, every step.',
+    f_discover_t: 'Discover', f_discover_d: 'Browse recipes by cuisine, category, or mood.',
+    f_planner_t: 'Weekly Meal Planner', f_planner_d: 'Plan a full week of meals in seconds.',
+    f_shopping_t: 'Smart Shopping List', f_shopping_d: 'Ingredients organized automatically from your plan.',
+    f_cooking_t: 'Cooking Mode', f_cooking_d: 'Step-by-step, hands-free instructions while you cook.',
+    f_favorites_t: 'Favorites & Collections', f_favorites_d: 'Save recipes and build your own cookbook.',
+    f_diet_t: 'Dietary Filters', f_diet_d: 'Vegetarian, vegan, gluten-free & more.',
+    f_lang_t: '15 Languages', f_lang_d: 'Every recipe, fully translated — always.',
+    f_dark_t: 'Dark Mode', f_dark_d: 'Cook comfortably, day or night.',
+    languages_eyebrow: 'Localization',
+    languages_title: 'Speaks your language',
+    languages_subtitle: 'Every recipe — title, ingredients, and every step — fully translated, not machine-guessed.',
+    cuisines_eyebrow: 'Around the World',
+    cuisines_title: '21 cuisines, one app',
+    cuisines_subtitle: 'From street food to royal palace kitchens.',
+    gallery_title: 'A closer look',
+    premium_eyebrow: 'Free to start',
+    premium_title: 'Cook for free. Unlock the full atlas with Premium.',
+    premium_desc: 'A generous set of recipes is free forever in every cuisine. Upgrade to GastroGlobe Premium to unlock the full 405-recipe library, the Royal Palace collection, and every future addition.',
+    why_eyebrow: 'Why GastroGlobe', why_title: 'Not just another recipe app', why_subtitle: "Here's what most cooking apps don't do.",
+    w_translate_t: 'Real translation, not guesswork', w_translate_d: 'Every recipe is fully translated into 15 languages by hand — titles, ingredients, and every step. Not machine-guessed, not English-only with a translated menu.',
+    w_breadth_t: 'True breadth, not a sampler', w_breadth_d: '21 full cuisines — including a rare Royal Palace archive most apps never touch. Not three "world" recipes bolted onto a Western menu.',
+    w_noads_t: 'No ad clutter', w_noads_d: 'A clean, focused cooking experience — not a feed interrupted by ads between every recipe.',
+    w_workflow_t: 'Built to actually cook from', w_workflow_d: 'Meal planner, shopping list, and hands-free cooking mode work together — not just a list of recipes to scroll past.',
+    footer_privacy: 'Privacy Policy', footer_terms: 'Terms of Service', footer_contact: 'Contact',
+    footer_dev: 'More apps by stmatrix', footer_tagline: 'World cuisine, one app.',
+  },
+  tr: {
+    nav_download: 'Uygulamayı İndir',
+    hero_eyebrow: 'Dünya Mutfağı Uygulaması',
+    hero_title: 'Dünyanın mutfaklarını keşfedin.',
+    hero_subtitle: '21 mutfaktan 405+ tarif, 15 dile tam çevrili — haftalık menü planlayıcı, akıllı alışveriş listesi ve adım adım pişirme modu ile.',
+    hero_cta_play: "Google Play'de İndir",
+    hero_cta_soon: 'App Store — çok yakında',
+    stat_recipes: 'Tarif', stat_cuisines: 'Mutfak', stat_languages: 'Dil',
+    features_eyebrow: 'Özellikler',
+    features_title: 'Mutfakta ihtiyacınız olan her şey',
+    features_subtitle: 'Keşiften sofraya — tek uygulama, her adımda yanınızda.',
+    f_discover_t: 'Keşfet', f_discover_d: 'Mutfağa, kategoriye veya o anki isteğinize göre tarif keşfedin.',
+    f_planner_t: 'Haftalık Menü Planlayıcı', f_planner_d: 'Saniyeler içinde tam bir haftalık menü oluşturun.',
+    f_shopping_t: 'Akıllı Alışveriş Listesi', f_shopping_d: 'Malzemeler planınızdan otomatik olarak listelenir.',
+    f_cooking_t: 'Pişirme Modu', f_cooking_d: 'Pişirirken elinizi kirletmeden adım adım talimatlar.',
+    f_favorites_t: 'Favoriler & Koleksiyonlar', f_favorites_d: 'Tarifleri kaydedin, kendi yemek kitabınızı oluşturun.',
+    f_diet_t: 'Diyet Filtreleri', f_diet_d: 'Vejetaryen, vegan, glutensiz ve daha fazlası.',
+    f_lang_t: '15 Dil', f_lang_d: 'Her tarif, eksiksiz çevrilmiş — her zaman.',
+    f_dark_t: 'Karanlık Mod', f_dark_d: 'Gece gündüz rahatça pişirin.',
+    languages_eyebrow: 'Yerelleştirme',
+    languages_title: 'Sizin dilinizi konuşur',
+    languages_subtitle: 'Her tarif — başlık, malzemeler ve her adım — makine tahmini değil, eksiksiz çevrilmiştir.',
+    cuisines_eyebrow: 'Dünya Turu',
+    cuisines_title: '21 mutfak, tek uygulama',
+    cuisines_subtitle: 'Sokak lezzetlerinden saray mutfaklarına.',
+    gallery_title: 'Yakından bakış',
+    premium_eyebrow: 'Ücretsiz başlayın',
+    premium_title: "Ücretsiz pişirin. Premium ile tüm atlası açın.",
+    premium_desc: 'Her mutfakta cömert bir tarif seçkisi her zaman ücretsizdir. GastroGlobe Premium ile 405 tarifin tamamını, Saray Mutfağı koleksiyonunu ve gelecekteki tüm eklemeleri açın.',
+    why_eyebrow: 'Neden GastroGlobe', why_title: 'Sıradan bir tarif uygulaması değil', why_subtitle: 'Çoğu yemek uygulamasının yapmadığı şeyler.',
+    w_translate_t: 'Gerçek çeviri, makine tahmini değil', w_translate_d: 'Her tarif — başlık, malzeme ve her adım — 15 dile elle çevrilir. Makine tahmini ya da sadece menüsü çevrilmiş İngilizce içerik değil.',
+    w_breadth_t: 'Gerçek genişlik, tadımlık değil', w_breadth_d: '21 tam mutfak — çoğu uygulamanın hiç dokunmadığı nadir bir Saray Mutfağı arşivi dahil. Batı menüsüne eklenmiş üç "dünya" tarifi değil.',
+    w_noads_t: 'Reklam kirliliği yok', w_noads_d: 'Her tarif arasına sıkışan reklamlar değil, temiz ve odaklanmış bir pişirme deneyimi.',
+    w_workflow_t: 'Gerçekten pişirmek için tasarlandı', w_workflow_d: 'Menü planlayıcı, alışveriş listesi ve elle temassız pişirme modu birlikte çalışır — kaydırıp geçilecek bir tarif listesi değil.',
+    footer_privacy: 'Gizlilik Politikası', footer_terms: 'Kullanım Koşulları', footer_contact: 'İletişim',
+    footer_dev: 'stmatrix\'in diğer uygulamaları', footer_tagline: 'Dünya mutfağı, tek uygulama.',
+  },
+  it: {
+    nav_download: "Scarica l'App",
+    hero_eyebrow: 'App di Cucina del Mondo',
+    hero_title: 'Scopri le cucine del mondo.',
+    hero_subtitle: 'Oltre 405 ricette da 21 cucine, tradotte in 15 lingue — con pianificatore settimanale, liste della spesa intelligenti e modalità di cottura passo-passo.',
+    hero_cta_play: 'Scarica su Google Play',
+    hero_cta_soon: 'App Store — in arrivo',
+    stat_recipes: 'Ricette', stat_cuisines: 'Cucine', stat_languages: 'Lingue',
+    features_eyebrow: 'Funzionalità',
+    features_title: 'Tutto ciò che ti serve in cucina',
+    features_subtitle: "Dalla scoperta alla tavola — un'unica app, ogni passo.",
+    f_discover_t: 'Scopri', f_discover_d: 'Sfoglia le ricette per cucina, categoria o voglia del momento.',
+    f_planner_t: 'Pianificatore Settimanale', f_planner_d: 'Pianifica un\'intera settimana di pasti in pochi secondi.',
+    f_shopping_t: 'Lista della Spesa Smart', f_shopping_d: 'Ingredienti organizzati automaticamente dal tuo piano.',
+    f_cooking_t: 'Modalità Cottura', f_cooking_d: 'Istruzioni passo-passo, a mani libere, mentre cucini.',
+    f_favorites_t: 'Preferiti e Collezioni', f_favorites_d: 'Salva le ricette e crea il tuo ricettario.',
+    f_diet_t: 'Filtri Alimentari', f_diet_d: 'Vegetariano, vegano, senza glutine e altro.',
+    f_lang_t: '15 Lingue', f_lang_d: 'Ogni ricetta, tradotta interamente — sempre.',
+    f_dark_t: 'Modalità Scura', f_dark_d: 'Cucina comodamente, giorno e notte.',
+    languages_eyebrow: 'Localizzazione',
+    languages_title: 'Parla la tua lingua',
+    languages_subtitle: 'Ogni ricetta — titolo, ingredienti e ogni passaggio — tradotta interamente, non generata a macchina.',
+    cuisines_eyebrow: 'In Giro per il Mondo',
+    cuisines_title: '21 cucine, un\'unica app',
+    cuisines_subtitle: 'Dallo street food alle cucine reali.',
+    gallery_title: 'Uno sguardo più da vicino',
+    premium_eyebrow: 'Inizia gratis',
+    premium_title: 'Cucina gratis. Sblocca tutto l\'atlante con Premium.',
+    premium_desc: 'Un ampio set di ricette è sempre gratuito in ogni cucina. Passa a GastroGlobe Premium per sbloccare l\'intera libreria di 405 ricette, la collezione Saray e ogni futura aggiunta.',
+    why_eyebrow: 'Perché GastroGlobe', why_title: 'Non la solita app di ricette', why_subtitle: 'Ecco cosa la maggior parte delle app di cucina non fa.',
+    w_translate_t: 'Traduzione vera, non indovinata', w_translate_d: 'Ogni ricetta è tradotta interamente in 15 lingue a mano — titoli, ingredienti e ogni passaggio. Non generata a macchina, non solo in inglese con un menu tradotto.',
+    w_breadth_t: 'Ampiezza vera, non un assaggio', w_breadth_d: '21 cucine complete — inclusa una rara collezione di corte reale che quasi nessuna app tocca. Non tre ricette "del mondo" aggiunte a un menu occidentale.',
+    w_noads_t: 'Nessuna pubblicità invadente', w_noads_d: "Un'esperienza di cucina pulita e concentrata — non un feed interrotto da pubblicità tra una ricetta e l'altra.",
+    w_workflow_t: "Pensata per cucinare davvero", w_workflow_d: 'Pianificatore, lista della spesa e modalità cottura funzionano insieme — non solo un elenco di ricette da scorrere.',
+    footer_privacy: 'Informativa sulla Privacy', footer_terms: 'Termini di Servizio', footer_contact: 'Contatti',
+    footer_dev: 'Altre app di stmatrix', footer_tagline: 'Cucina del mondo, un\'unica app.',
+  },
+  fr: {
+    nav_download: "Télécharger l'App",
+    hero_eyebrow: 'App de Cuisine du Monde',
+    hero_title: 'Découvrez les cuisines du monde.',
+    hero_subtitle: 'Plus de 405 recettes issues de 21 cuisines, traduites en 15 langues — avec planificateur hebdomadaire, listes de courses intelligentes et mode cuisine pas à pas.',
+    hero_cta_play: 'Disponible sur Google Play',
+    hero_cta_soon: 'App Store — bientôt disponible',
+    stat_recipes: 'Recettes', stat_cuisines: 'Cuisines', stat_languages: 'Langues',
+    features_eyebrow: 'Fonctionnalités',
+    features_title: 'Tout ce dont vous avez besoin en cuisine',
+    features_subtitle: 'De la découverte à la table — une seule app, à chaque étape.',
+    f_discover_t: 'Découvrir', f_discover_d: 'Parcourez les recettes par cuisine, catégorie ou envie.',
+    f_planner_t: 'Planificateur Hebdomadaire', f_planner_d: 'Planifiez une semaine entière de repas en quelques secondes.',
+    f_shopping_t: 'Liste de Courses Intelligente', f_shopping_d: 'Ingrédients organisés automatiquement depuis votre plan.',
+    f_cooking_t: 'Mode Cuisine', f_cooking_d: 'Instructions pas à pas, mains libres, pendant que vous cuisinez.',
+    f_favorites_t: 'Favoris & Collections', f_favorites_d: 'Enregistrez vos recettes et créez votre propre livre de cuisine.',
+    f_diet_t: 'Filtres Alimentaires', f_diet_d: 'Végétarien, vegan, sans gluten et plus encore.',
+    f_lang_t: '15 Langues', f_lang_d: 'Chaque recette, entièrement traduite — toujours.',
+    f_dark_t: 'Mode Sombre', f_dark_d: 'Cuisinez confortablement, jour et nuit.',
+    languages_eyebrow: 'Localisation',
+    languages_title: 'Parle votre langue',
+    languages_subtitle: 'Chaque recette — titre, ingrédients et chaque étape — entièrement traduite, pas générée par une machine.',
+    cuisines_eyebrow: 'Autour du Monde',
+    cuisines_title: '21 cuisines, une seule app',
+    cuisines_subtitle: 'De la street food aux cuisines royales.',
+    gallery_title: 'Un aperçu plus proche',
+    premium_eyebrow: 'Gratuit pour commencer',
+    premium_title: 'Cuisinez gratuitement. Débloquez tout l\'atlas avec Premium.',
+    premium_desc: 'Un large choix de recettes est gratuit pour toujours dans chaque cuisine. Passez à GastroGlobe Premium pour débloquer les 405 recettes, la collection du Palais Royal et tous les futurs ajouts.',
+    why_eyebrow: 'Pourquoi GastroGlobe', why_title: 'Pas juste une app de recettes de plus', why_subtitle: 'Voici ce que la plupart des apps de cuisine ne font pas.',
+    w_translate_t: 'Une vraie traduction, pas une approximation', w_translate_d: 'Chaque recette est entièrement traduite en 15 langues, à la main — titres, ingrédients et chaque étape. Pas générée par une machine, pas seulement en anglais avec un menu traduit.',
+    w_breadth_t: 'Une vraie diversité, pas un échantillon', w_breadth_d: '21 cuisines complètes — dont une rare collection du Palais Royal que presque aucune app n\'aborde. Pas trois recettes "du monde" ajoutées à un menu occidental.',
+    w_noads_t: 'Sans publicités envahissantes', w_noads_d: 'Une expérience culinaire claire et concentrée — pas un fil interrompu par des publicités entre chaque recette.',
+    w_workflow_t: 'Conçue pour cuisiner réellement', w_workflow_d: 'Planificateur, liste de courses et mode cuisine fonctionnent ensemble — pas juste une liste de recettes à faire défiler.',
+    footer_privacy: 'Politique de Confidentialité', footer_terms: 'Conditions d\'Utilisation', footer_contact: 'Contact',
+    footer_dev: "Plus d'apps par stmatrix", footer_tagline: 'Cuisine du monde, une seule app.',
+  },
+  es: {
+    nav_download: 'Descargar la App',
+    hero_eyebrow: 'App de Cocina del Mundo',
+    hero_title: 'Descubre las cocinas del mundo.',
+    hero_subtitle: 'Más de 405 recetas de 21 cocinas, traducidas a 15 idiomas — con planificador semanal, listas de compra inteligentes y modo de cocina paso a paso.',
+    hero_cta_play: 'Consíguelo en Google Play',
+    hero_cta_soon: 'App Store — próximamente',
+    stat_recipes: 'Recetas', stat_cuisines: 'Cocinas', stat_languages: 'Idiomas',
+    features_eyebrow: 'Funciones',
+    features_title: 'Todo lo que necesitas en la cocina',
+    features_subtitle: 'Del descubrimiento a la mesa — una app, cada paso.',
+    f_discover_t: 'Descubrir', f_discover_d: 'Explora recetas por cocina, categoría o antojo.',
+    f_planner_t: 'Planificador Semanal', f_planner_d: 'Planifica una semana completa de comidas en segundos.',
+    f_shopping_t: 'Lista de Compras Inteligente', f_shopping_d: 'Ingredientes organizados automáticamente desde tu plan.',
+    f_cooking_t: 'Modo Cocina', f_cooking_d: 'Instrucciones paso a paso, manos libres, mientras cocinas.',
+    f_favorites_t: 'Favoritos y Colecciones', f_favorites_d: 'Guarda recetas y crea tu propio recetario.',
+    f_diet_t: 'Filtros Dietéticos', f_diet_d: 'Vegetariano, vegano, sin gluten y más.',
+    f_lang_t: '15 Idiomas', f_lang_d: 'Cada receta, completamente traducida — siempre.',
+    f_dark_t: 'Modo Oscuro', f_dark_d: 'Cocina cómodamente, de día o de noche.',
+    languages_eyebrow: 'Localización',
+    languages_title: 'Habla tu idioma',
+    languages_subtitle: 'Cada receta — título, ingredientes y cada paso — traducida por completo, no generada por máquina.',
+    cuisines_eyebrow: 'Alrededor del Mundo',
+    cuisines_title: '21 cocinas, una app',
+    cuisines_subtitle: 'Desde comida callejera hasta cocinas reales.',
+    gallery_title: 'Una mirada más cercana',
+    premium_eyebrow: 'Empieza gratis',
+    premium_title: 'Cocina gratis. Desbloquea todo el atlas con Premium.',
+    premium_desc: 'Un generoso conjunto de recetas es gratis para siempre en cada cocina. Actualiza a GastroGlobe Premium para desbloquear las 405 recetas, la colección del Palacio Real y cada futura incorporación.',
+    why_eyebrow: 'Por qué GastroGlobe', why_title: 'No es una app de recetas más', why_subtitle: 'Esto es lo que la mayoría de apps de cocina no hacen.',
+    w_translate_t: 'Traducción real, no una suposición', w_translate_d: 'Cada receta está traducida por completo a 15 idiomas, a mano — títulos, ingredientes y cada paso. No generada por máquina, no solo en inglés con un menú traducido.',
+    w_breadth_t: 'Amplitud real, no una muestra', w_breadth_d: '21 cocinas completas — incluyendo una rara colección del Palacio Real que casi ninguna app toca. No tres recetas "del mundo" añadidas a un menú occidental.',
+    w_noads_t: 'Sin publicidad invasiva', w_noads_d: 'Una experiencia de cocina limpia y enfocada — no un feed interrumpido por anuncios entre cada receta.',
+    w_workflow_t: 'Diseñada para cocinar de verdad', w_workflow_d: 'Planificador, lista de compras y modo cocina funcionan juntos — no solo una lista de recetas para desplazarse.',
+    footer_privacy: 'Política de Privacidad', footer_terms: 'Términos de Servicio', footer_contact: 'Contacto',
+    footer_dev: 'Más apps de stmatrix', footer_tagline: 'Cocina del mundo, una app.',
+  },
+  'es-MX': {
+    nav_download: 'Descargar la App',
+    hero_eyebrow: 'App de Cocina del Mundo',
+    hero_title: 'Descubre las cocinas del mundo.',
+    hero_subtitle: 'Más de 405 recetas de 21 cocinas, traducidas a 15 idiomas — con planificador semanal, listas de compras inteligentes y modo de cocina paso a paso.',
+    hero_cta_play: 'Consíguelo en Google Play',
+    hero_cta_soon: 'App Store — próximamente',
+    stat_recipes: 'Recetas', stat_cuisines: 'Cocinas', stat_languages: 'Idiomas',
+    features_eyebrow: 'Funciones',
+    features_title: 'Todo lo que necesitas en la cocina',
+    features_subtitle: 'Del descubrimiento a la mesa — una app, cada paso.',
+    f_discover_t: 'Descubrir', f_discover_d: 'Explora recetas por cocina, categoría o antojo.',
+    f_planner_t: 'Planificador Semanal', f_planner_d: 'Planifica una semana completa de comidas en segundos.',
+    f_shopping_t: 'Lista de Compras Inteligente', f_shopping_d: 'Ingredientes organizados automáticamente desde tu plan.',
+    f_cooking_t: 'Modo Cocina', f_cooking_d: 'Instrucciones paso a paso, manos libres, mientras cocinas.',
+    f_favorites_t: 'Favoritos y Colecciones', f_favorites_d: 'Guarda recetas y crea tu propio recetario.',
+    f_diet_t: 'Filtros Dietéticos', f_diet_d: 'Vegetariano, vegano, sin gluten y más.',
+    f_lang_t: '15 Idiomas', f_lang_d: 'Cada receta, completamente traducida — siempre.',
+    f_dark_t: 'Modo Oscuro', f_dark_d: 'Cocina cómodamente, de día o de noche.',
+    languages_eyebrow: 'Localización',
+    languages_title: 'Habla tu idioma',
+    languages_subtitle: 'Cada receta — título, ingredientes y cada paso — traducida por completo, no generada por máquina.',
+    cuisines_eyebrow: 'Alrededor del Mundo',
+    cuisines_title: '21 cocinas, una app',
+    cuisines_subtitle: 'Desde comida callejera hasta cocinas reales.',
+    gallery_title: 'Una mirada más cercana',
+    premium_eyebrow: 'Empieza gratis',
+    premium_title: 'Cocina gratis. Desbloquea todo el atlas con Premium.',
+    premium_desc: 'Un generoso conjunto de recetas es gratis para siempre en cada cocina. Actualiza a GastroGlobe Premium para desbloquear las 405 recetas, la colección del Palacio Real y cada futura incorporación.',
+    why_eyebrow: 'Por qué GastroGlobe', why_title: 'No es una app de recetas más', why_subtitle: 'Esto es lo que la mayoría de apps de cocina no hacen.',
+    w_translate_t: 'Traducción real, no una suposición', w_translate_d: 'Cada receta está traducida por completo a 15 idiomas, a mano — títulos, ingredientes y cada paso. No generada por máquina, no solo en inglés con un menú traducido.',
+    w_breadth_t: 'Amplitud real, no una muestra', w_breadth_d: '21 cocinas completas — incluyendo una rara colección del Palacio Real que casi ninguna app toca. No tres recetas "del mundo" añadidas a un menú occidental.',
+    w_noads_t: 'Sin publicidad invasiva', w_noads_d: 'Una experiencia de cocina limpia y enfocada — no un feed interrumpido por anuncios entre cada receta.',
+    w_workflow_t: 'Diseñada para cocinar de verdad', w_workflow_d: 'Planificador, lista de compras y modo cocina funcionan juntos — no solo una lista de recetas para desplazarse.',
+    footer_privacy: 'Aviso de Privacidad', footer_terms: 'Términos de Servicio', footer_contact: 'Contacto',
+    footer_dev: 'Más apps de stmatrix', footer_tagline: 'Cocina del mundo, una app.',
+  },
+  de: {
+    nav_download: 'App herunterladen',
+    hero_eyebrow: 'Weltküchen-App',
+    hero_title: 'Entdecke die Küchen der Welt.',
+    hero_subtitle: 'Über 405 Rezepte aus 21 Küchen, übersetzt in 15 Sprachen — mit Wochenplaner, intelligenten Einkaufslisten und Schritt-für-Schritt-Kochmodus.',
+    hero_cta_play: 'Bei Google Play holen',
+    hero_cta_soon: 'App Store — bald verfügbar',
+    stat_recipes: 'Rezepte', stat_cuisines: 'Küchen', stat_languages: 'Sprachen',
+    features_eyebrow: 'Funktionen',
+    features_title: 'Alles, was du in der Küche brauchst',
+    features_subtitle: 'Von der Entdeckung bis zum Tisch — eine App, jeder Schritt.',
+    f_discover_t: 'Entdecken', f_discover_d: 'Durchsuche Rezepte nach Küche, Kategorie oder Lust.',
+    f_planner_t: 'Wochenplaner', f_planner_d: 'Plane eine ganze Woche Mahlzeiten in Sekunden.',
+    f_shopping_t: 'Intelligente Einkaufsliste', f_shopping_d: 'Zutaten automatisch aus deinem Plan organisiert.',
+    f_cooking_t: 'Kochmodus', f_cooking_d: 'Schritt-für-Schritt-Anleitung, freihändig, während du kochst.',
+    f_favorites_t: 'Favoriten & Sammlungen', f_favorites_d: 'Speichere Rezepte und erstelle dein eigenes Kochbuch.',
+    f_diet_t: 'Ernährungsfilter', f_diet_d: 'Vegetarisch, vegan, glutenfrei und mehr.',
+    f_lang_t: '15 Sprachen', f_lang_d: 'Jedes Rezept, vollständig übersetzt — immer.',
+    f_dark_t: 'Dunkelmodus', f_dark_d: 'Koche entspannt, Tag und Nacht.',
+    languages_eyebrow: 'Lokalisierung',
+    languages_title: 'Spricht deine Sprache',
+    languages_subtitle: 'Jedes Rezept — Titel, Zutaten und jeder Schritt — vollständig übersetzt, nicht maschinell geraten.',
+    cuisines_eyebrow: 'Rund um die Welt',
+    cuisines_title: '21 Küchen, eine App',
+    cuisines_subtitle: 'Von Streetfood bis zur königlichen Palastküche.',
+    gallery_title: 'Ein genauerer Blick',
+    premium_eyebrow: 'Kostenlos starten',
+    premium_title: 'Kostenlos kochen. Den ganzen Atlas mit Premium freischalten.',
+    premium_desc: 'Eine großzügige Auswahl an Rezepten ist in jeder Küche für immer kostenlos. Wechsle zu GastroGlobe Premium, um die gesamte Bibliothek mit 405 Rezepten, die Palastküchen-Sammlung und jede zukünftige Ergänzung freizuschalten.',
+    why_eyebrow: 'Warum GastroGlobe', why_title: 'Nicht einfach nur eine weitere Rezept-App', why_subtitle: 'Das hier machen die meisten Koch-Apps nicht.',
+    w_translate_t: 'Echte Übersetzung, kein Rätselraten', w_translate_d: 'Jedes Rezept ist von Hand vollständig in 15 Sprachen übersetzt — Titel, Zutaten und jeder Schritt. Nicht maschinell geraten, nicht nur Englisch mit übersetztem Menü.',
+    w_breadth_t: 'Echte Bandbreite, keine Kostprobe', w_breadth_d: '21 vollständige Küchen — inklusive einer seltenen Palastküchen-Sammlung, die fast keine andere App bietet. Nicht drei „Welt"-Rezepte, die an ein westliches Menü angehängt wurden.',
+    w_noads_t: 'Keine Werbe-Unterbrechungen', w_noads_d: 'Ein klares, fokussiertes Kocherlebnis — kein Feed, der zwischen jedem Rezept von Werbung unterbrochen wird.',
+    w_workflow_t: 'Zum tatsächlichen Kochen gebaut', w_workflow_d: 'Wochenplaner, Einkaufsliste und Kochmodus arbeiten zusammen — nicht nur eine Rezeptliste zum Durchscrollen.',
+    footer_privacy: 'Datenschutzerklärung', footer_terms: 'Nutzungsbedingungen', footer_contact: 'Kontakt',
+    footer_dev: 'Weitere Apps von stmatrix', footer_tagline: 'Weltküche, eine App.',
+  },
+  pt: {
+    nav_download: 'Baixar o App',
+    hero_eyebrow: 'App de Culinária Mundial',
+    hero_title: 'Descubra as cozinhas do mundo.',
+    hero_subtitle: 'Mais de 405 receitas de 21 cozinhas, traduzidas em 15 idiomas — com planejador semanal, listas de compras inteligentes e modo de cozinha passo a passo.',
+    hero_cta_play: 'Disponível no Google Play',
+    hero_cta_soon: 'App Store — em breve',
+    stat_recipes: 'Receitas', stat_cuisines: 'Cozinhas', stat_languages: 'Idiomas',
+    features_eyebrow: 'Funcionalidades',
+    features_title: 'Tudo o que você precisa na cozinha',
+    features_subtitle: 'Da descoberta à mesa — um app, cada passo.',
+    f_discover_t: 'Descobrir', f_discover_d: 'Navegue por receitas por cozinha, categoria ou vontade.',
+    f_planner_t: 'Planejador Semanal', f_planner_d: 'Planeje uma semana inteira de refeições em segundos.',
+    f_shopping_t: 'Lista de Compras Inteligente', f_shopping_d: 'Ingredientes organizados automaticamente a partir do seu plano.',
+    f_cooking_t: 'Modo de Cozinha', f_cooking_d: 'Instruções passo a passo, mãos livres, enquanto você cozinha.',
+    f_favorites_t: 'Favoritos e Coleções', f_favorites_d: 'Salve receitas e crie seu próprio livro de receitas.',
+    f_diet_t: 'Filtros Alimentares', f_diet_d: 'Vegetariano, vegano, sem glúten e mais.',
+    f_lang_t: '15 Idiomas', f_lang_d: 'Cada receita, totalmente traduzida — sempre.',
+    f_dark_t: 'Modo Escuro', f_dark_d: 'Cozinhe com conforto, de dia ou de noite.',
+    languages_eyebrow: 'Localização',
+    languages_title: 'Fala o seu idioma',
+    languages_subtitle: 'Cada receita — título, ingredientes e cada passo — totalmente traduzida, não gerada por máquina.',
+    cuisines_eyebrow: 'Ao Redor do Mundo',
+    cuisines_title: '21 cozinhas, um app',
+    cuisines_subtitle: 'Da comida de rua às cozinhas reais.',
+    gallery_title: 'Um olhar mais de perto',
+    premium_eyebrow: 'Comece grátis',
+    premium_title: 'Cozinhe grátis. Desbloqueie todo o atlas com o Premium.',
+    premium_desc: 'Um conjunto generoso de receitas é sempre gratuito em cada cozinha. Atualize para o GastroGlobe Premium para desbloquear as 405 receitas, a coleção do Palácio Real e cada nova adição futura.',
+    why_eyebrow: 'Por que GastroGlobe', why_title: 'Não é apenas mais um app de receitas', why_subtitle: 'Veja o que a maioria dos apps de culinária não faz.',
+    w_translate_t: 'Tradução de verdade, não achismo', w_translate_d: 'Cada receita é totalmente traduzida à mão em 15 idiomas — títulos, ingredientes e cada passo. Não gerada por máquina, não apenas inglês com um menu traduzido.',
+    w_breadth_t: 'Amplitude real, não uma amostra', w_breadth_d: '21 cozinhas completas — incluindo uma rara coleção do Palácio Real que quase nenhum app aborda. Não três receitas "do mundo" anexadas a um cardápio ocidental.',
+    w_noads_t: 'Sem poluição de anúncios', w_noads_d: 'Uma experiência culinária limpa e focada — não um feed interrompido por anúncios entre cada receita.',
+    w_workflow_t: 'Feito para cozinhar de verdade', w_workflow_d: 'Planejador, lista de compras e modo de cozinha funcionam juntos — não apenas uma lista de receitas para rolar.',
+    footer_privacy: 'Política de Privacidade', footer_terms: 'Termos de Serviço', footer_contact: 'Contato',
+    footer_dev: 'Mais apps da stmatrix', footer_tagline: 'Culinária mundial, um app.',
+  },
+  zh: {
+    nav_download: '下载应用',
+    hero_eyebrow: '世界美食应用',
+    hero_title: '探索世界各地的美食。',
+    hero_subtitle: '涵盖21种菜系的405多道食谱，翻译成15种语言——配有每周膳食计划、智能购物清单和分步烹饪模式。',
+    hero_cta_play: '在Google Play获取',
+    hero_cta_soon: 'App Store — 即将上线',
+    stat_recipes: '食谱', stat_cuisines: '菜系', stat_languages: '语言',
+    features_eyebrow: '功能',
+    features_title: '厨房里所需的一切',
+    features_subtitle: '从发现到餐桌——一个应用，全程陪伴。',
+    f_discover_t: '发现', f_discover_d: '按菜系、分类或心情浏览食谱。',
+    f_planner_t: '每周膳食计划', f_planner_d: '几秒钟内规划一整周的餐食。',
+    f_shopping_t: '智能购物清单', f_shopping_d: '根据你的计划自动整理食材清单。',
+    f_cooking_t: '烹饪模式', f_cooking_d: '烹饪时的分步、免触屏操作指引。',
+    f_favorites_t: '收藏与合集', f_favorites_d: '保存食谱，打造属于你的食谱集。',
+    f_diet_t: '饮食筛选', f_diet_d: '素食、纯素、无麸质等多种选择。',
+    f_lang_t: '15种语言', f_lang_d: '每道食谱，完整翻译——始终如一。',
+    f_dark_t: '深色模式', f_dark_d: '白天黑夜都能舒适地烹饪。',
+    languages_eyebrow: '本地化',
+    languages_title: '说你的语言',
+    languages_subtitle: '每道食谱——标题、食材和每个步骤——均为完整人工翻译，而非机器猜测。',
+    cuisines_eyebrow: '环游世界',
+    cuisines_title: '21种菜系，一个应用',
+    cuisines_subtitle: '从街头小吃到皇家御膳。',
+    gallery_title: '近距离了解',
+    premium_eyebrow: '免费开始',
+    premium_title: '免费烹饪，升级Premium解锁完整图谱。',
+    premium_desc: '每种菜系都永久提供丰富的免费食谱。升级GastroGlobe Premium，解锁全部405道食谱、御膳合集及未来所有新增内容。',
+    why_eyebrow: '为什么选择GastroGlobe', why_title: '不只是又一个食谱应用', why_subtitle: '这些是大多数美食应用做不到的。',
+    w_translate_t: '真正的翻译，而非机器猜测', w_translate_d: '每道食谱——标题、食材、每个步骤——均由人工完整翻译成15种语言，而非机器翻译，也不是仅英文界面配翻译菜单。',
+    w_breadth_t: '真正的广度，而非浅尝辄止', w_breadth_d: '涵盖21种完整菜系——包括几乎无人涉足的稀有御膳合集，而非在西式菜单上添加三道"世界"食谱。',
+    w_noads_t: '无广告干扰', w_noads_d: '专注纯粹的烹饪体验——而非每道食谱之间插满广告的信息流。',
+    w_workflow_t: '为真正下厨而设计', w_workflow_d: '膳食计划、购物清单和烹饪模式协同工作——而不仅仅是一份可供滑动浏览的食谱列表。',
+    footer_privacy: '隐私政策', footer_terms: '服务条款', footer_contact: '联系我们',
+    footer_dev: 'stmatrix的更多应用', footer_tagline: '世界美食，一个应用。',
+  },
+  ja: {
+    nav_download: 'アプリを入手',
+    hero_eyebrow: '世界の料理アプリ',
+    hero_title: '世界のキッチンを発見しよう。',
+    hero_subtitle: '21の料理から405以上のレシピ、15言語に翻訳済み——週間献立プランナー、スマート買い物リスト、ステップバイステップの調理モード付き。',
+    hero_cta_play: 'Google Playで入手',
+    hero_cta_soon: 'App Store — 近日公開',
+    stat_recipes: 'レシピ', stat_cuisines: '料理', stat_languages: '言語',
+    features_eyebrow: '機能',
+    features_title: 'キッチンに必要なすべて',
+    features_subtitle: '発見から食卓まで——1つのアプリで、すべてのステップを。',
+    f_discover_t: '発見', f_discover_d: '料理、カテゴリー、気分でレシピを探す。',
+    f_planner_t: '週間献立プランナー', f_planner_d: '数秒で1週間分の献立を計画。',
+    f_shopping_t: 'スマート買い物リスト', f_shopping_d: '献立から食材を自動で整理。',
+    f_cooking_t: '調理モード', f_cooking_d: '調理中もハンズフリーでステップごとの指示。',
+    f_favorites_t: 'お気に入り＆コレクション', f_favorites_d: 'レシピを保存し、自分だけのレシピ集を作成。',
+    f_diet_t: '食事フィルター', f_diet_d: 'ベジタリアン、ヴィーガン、グルテンフリーなど。',
+    f_lang_t: '15言語', f_lang_d: 'すべてのレシピを完全翻訳——常に。',
+    f_dark_t: 'ダークモード', f_dark_d: '昼も夜も快適に調理。',
+    languages_eyebrow: 'ローカライズ',
+    languages_title: 'あなたの言語で',
+    languages_subtitle: 'タイトル、材料、すべてのステップまで——機械翻訳ではなく、完全に人の手で翻訳。',
+    cuisines_eyebrow: '世界一周',
+    cuisines_title: '21の料理、1つのアプリ',
+    cuisines_subtitle: 'ストリートフードから宮廷料理まで。',
+    gallery_title: 'もっと詳しく',
+    premium_eyebrow: '無料で始める',
+    premium_title: '無料で調理。Premiumで全アトラスを解放。',
+    premium_desc: 'すべての料理で豊富なレシピが永久無料。GastroGlobe Premiumにアップグレードすると、405のレシピすべて、宮廷料理コレクション、今後追加されるすべてのコンテンツが解放されます。',
+    why_eyebrow: 'GastroGlobeが選ばれる理由', why_title: 'ただのレシピアプリではありません', why_subtitle: 'ほとんどの料理アプリができていないこと。',
+    w_translate_t: '本物の翻訳、機械任せではない', w_translate_d: 'すべてのレシピ——タイトル、材料、各ステップまで——15言語に人の手で完全翻訳。機械翻訳でも、英語だけでメニューだけ翻訳したものでもありません。',
+    w_breadth_t: '本当の広さ、つまみ食いではない', w_breadth_d: 'ほとんどのアプリが扱わない貴重な宮廷料理コレクションを含む、21の完全な料理。欧米メニューに付け足された「世界の」レシピ3品ではありません。',
+    w_noads_t: '広告の煩わしさなし', w_noads_d: 'レシピごとに広告が挟まるフィードではなく、すっきりと集中できる調理体験。',
+    w_workflow_t: '本当に調理するために設計', w_workflow_d: '献立プランナー、買い物リスト、調理モードが連携して機能——スクロールするだけのレシピ一覧ではありません。',
+    footer_privacy: 'プライバシーポリシー', footer_terms: '利用規約', footer_contact: 'お問い合わせ',
+    footer_dev: 'stmatrixの他のアプリ', footer_tagline: '世界の料理、1つのアプリ。',
+  },
+  ko: {
+    nav_download: '앱 받기',
+    hero_eyebrow: '세계 요리 앱',
+    hero_title: '세계의 주방을 발견하세요.',
+    hero_subtitle: '21개 요리 405개 이상의 레시피, 15개 언어로 번역 — 주간 식단 플래너, 스마트 쇼핑 리스트, 단계별 요리 모드까지.',
+    hero_cta_play: 'Google Play에서 받기',
+    hero_cta_soon: 'App Store — 출시 예정',
+    stat_recipes: '레시피', stat_cuisines: '요리', stat_languages: '언어',
+    features_eyebrow: '기능',
+    features_title: '주방에 필요한 모든 것',
+    features_subtitle: '발견부터 식탁까지 — 하나의 앱, 모든 단계에서.',
+    f_discover_t: '탐색', f_discover_d: '요리, 카테고리, 기분에 따라 레시피를 둘러보세요.',
+    f_planner_t: '주간 식단 플래너', f_planner_d: '몇 초 만에 일주일 식단을 계획하세요.',
+    f_shopping_t: '스마트 쇼핑 리스트', f_shopping_d: '식단에서 자동으로 정리되는 재료 목록.',
+    f_cooking_t: '요리 모드', f_cooking_d: '요리하는 동안 핸즈프리 단계별 안내.',
+    f_favorites_t: '즐겨찾기 & 컬렉션', f_favorites_d: '레시피를 저장하고 나만의 레시피북을 만드세요.',
+    f_diet_t: '식이 필터', f_diet_d: '채식, 비건, 글루텐프리 등.',
+    f_lang_t: '15개 언어', f_lang_d: '모든 레시피, 완벽하게 번역됨 — 언제나.',
+    f_dark_t: '다크 모드', f_dark_d: '낮이든 밤이든 편안하게 요리하세요.',
+    languages_eyebrow: '현지화',
+    languages_title: '당신의 언어로',
+    languages_subtitle: '제목, 재료, 모든 단계까지 — 기계 번역이 아닌 완전한 번역.',
+    cuisines_eyebrow: '세계 일주',
+    cuisines_title: '21개 요리, 하나의 앱',
+    cuisines_subtitle: '길거리 음식부터 궁중 요리까지.',
+    gallery_title: '자세히 보기',
+    premium_eyebrow: '무료로 시작',
+    premium_title: '무료로 요리하세요. Premium으로 전체 지도를 잠금 해제.',
+    premium_desc: '모든 요리에서 풍부한 레시피가 언제나 무료입니다. GastroGlobe Premium으로 업그레이드하면 405개 레시피 전체, 궁중 요리 컬렉션, 그리고 앞으로 추가되는 모든 콘텐츠를 이용할 수 있습니다.',
+    why_eyebrow: 'GastroGlobe를 선택해야 하는 이유', why_title: '흔한 레시피 앱이 아닙니다', why_subtitle: '대부분의 요리 앱이 하지 못하는 것들입니다.',
+    w_translate_t: '진짜 번역, 추측이 아닙니다', w_translate_d: '모든 레시피 — 제목, 재료, 모든 단계 — 가 15개 언어로 완전히 수작업 번역됩니다. 기계 번역도, 영어에 메뉴만 번역한 것도 아닙니다.',
+    w_breadth_t: '진짜 다양성, 맛보기가 아닙니다', w_breadth_d: '거의 어떤 앱도 다루지 않는 희귀한 궁중 요리 컬렉션을 포함한 21개의 완전한 요리. 서양 메뉴에 끼워 넣은 "세계 요리" 3가지가 아닙니다.',
+    w_noads_t: '광고 방해 없음', w_noads_d: '레시피마다 광고가 끼어드는 피드가 아닌, 깔끔하고 집중된 요리 경험.',
+    w_workflow_t: '실제로 요리하기 위해 설계됨', w_workflow_d: '식단 플래너, 쇼핑 리스트, 요리 모드가 함께 작동합니다 — 그냥 스크롤하는 레시피 목록이 아닙니다.',
+    footer_privacy: '개인정보처리방침', footer_terms: '이용약관', footer_contact: '문의하기',
+    footer_dev: 'stmatrix의 다른 앱', footer_tagline: '세계 요리, 하나의 앱.',
+  },
+  hi: {
+    nav_download: 'ऐप डाउनलोड करें',
+    hero_eyebrow: 'विश्व व्यंजन ऐप',
+    hero_title: 'दुनिया की रसोइयों को खोजें।',
+    hero_subtitle: '21 व्यंजनों की 405+ रेसिपी, 15 भाषाओं में अनुवादित — साप्ताहिक भोजन योजना, स्मार्ट शॉपिंग लिस्ट और चरण-दर-चरण कुकिंग मोड के साथ।',
+    hero_cta_play: 'Google Play पर पाएं',
+    hero_cta_soon: 'App Store — जल्द आ रहा है',
+    stat_recipes: 'रेसिपी', stat_cuisines: 'व्यंजन', stat_languages: 'भाषाएं',
+    features_eyebrow: 'विशेषताएं',
+    features_title: 'रसोई में आपकी हर ज़रूरत',
+    features_subtitle: 'खोज से लेकर डाइनिंग टेबल तक — एक ऐप, हर कदम पर।',
+    f_discover_t: 'खोजें', f_discover_d: 'व्यंजन, श्रेणी या मूड के अनुसार रेसिपी ब्राउज़ करें।',
+    f_planner_t: 'साप्ताहिक भोजन योजना', f_planner_d: 'सेकंडों में पूरे सप्ताह का भोजन योजना बनाएं।',
+    f_shopping_t: 'स्मार्ट शॉपिंग लिस्ट', f_shopping_d: 'आपकी योजना से सामग्री स्वतः व्यवस्थित।',
+    f_cooking_t: 'कुकिंग मोड', f_cooking_d: 'खाना बनाते समय हैंड्स-फ्री, चरण-दर-चरण निर्देश।',
+    f_favorites_t: 'पसंदीदा और संग्रह', f_favorites_d: 'रेसिपी सहेजें और अपनी खुद की कुकबुक बनाएं।',
+    f_diet_t: 'आहार फ़िल्टर', f_diet_d: 'शाकाहारी, वीगन, ग्लूटेन-फ्री और अधिक।',
+    f_lang_t: '15 भाषाएं', f_lang_d: 'हर रेसिपी, पूरी तरह अनुवादित — हमेशा।',
+    f_dark_t: 'डार्क मोड', f_dark_d: 'दिन हो या रात, आराम से पकाएं।',
+    languages_eyebrow: 'स्थानीयकरण',
+    languages_title: 'आपकी भाषा बोलता है',
+    languages_subtitle: 'हर रेसिपी — शीर्षक, सामग्री और हर चरण — पूरी तरह अनुवादित, मशीन-अनुमानित नहीं।',
+    cuisines_eyebrow: 'दुनिया भर में',
+    cuisines_title: '21 व्यंजन, एक ऐप',
+    cuisines_subtitle: 'स्ट्रीट फूड से लेकर शाही रसोई तक।',
+    gallery_title: 'करीब से एक नज़र',
+    premium_eyebrow: 'मुफ़्त शुरू करें',
+    premium_title: 'मुफ़्त में पकाएं। Premium से पूरा एटलस अनलॉक करें।',
+    premium_desc: 'हर व्यंजन में उदार रेसिपी सेट हमेशा मुफ़्त है। GastroGlobe Premium में अपग्रेड करें और पूरी 405 रेसिपी लाइब्रेरी, शाही रसोई संग्रह, और भविष्य के हर नए जोड़ को अनलॉक करें।',
+    why_eyebrow: 'GastroGlobe क्यों', why_title: 'सिर्फ एक और रेसिपी ऐप नहीं', why_subtitle: 'यह वह है जो ज़्यादातर कुकिंग ऐप्स नहीं करते।',
+    w_translate_t: 'असली अनुवाद, अंदाज़ा नहीं', w_translate_d: 'हर रेसिपी — शीर्षक, सामग्री और हर चरण — हाथ से 15 भाषाओं में पूरी तरह अनुवादित है। मशीन-अनुमानित नहीं, सिर्फ अंग्रेज़ी में अनुवादित मेनू के साथ नहीं।',
+    w_breadth_t: 'असली विविधता, नमूना नहीं', w_breadth_d: '21 पूर्ण व्यंजन — जिसमें एक दुर्लभ शाही रसोई संग्रह भी शामिल है जिसे लगभग कोई ऐप नहीं छूता। पश्चिमी मेनू में जोड़ी गई तीन "विश्व" रेसिपी नहीं।',
+    w_noads_t: 'विज्ञापनों की भरमार नहीं', w_noads_d: 'हर रेसिपी के बीच विज्ञापनों से बाधित फ़ीड नहीं, बल्कि एक साफ़, केंद्रित खाना पकाने का अनुभव।',
+    w_workflow_t: 'वास्तव में पकाने के लिए बनाया गया', w_workflow_d: 'भोजन योजना, शॉपिंग लिस्ट और कुकिंग मोड साथ मिलकर काम करते हैं — सिर्फ स्क्रॉल करने वाली रेसिपी सूची नहीं।',
+    footer_privacy: 'गोपनीयता नीति', footer_terms: 'सेवा की शर्तें', footer_contact: 'संपर्क करें',
+    footer_dev: 'stmatrix के अन्य ऐप्स', footer_tagline: 'विश्व व्यंजन, एक ऐप।',
+  },
+  th: {
+    nav_download: 'ดาวน์โหลดแอป',
+    hero_eyebrow: 'แอปอาหารทั่วโลก',
+    hero_title: 'ค้นพบครัวจากทั่วโลก',
+    hero_subtitle: 'สูตรอาหารกว่า 405 สูตรจาก 21 ครัว แปลครบ 15 ภาษา พร้อมตัววางแผนมื้ออาหารรายสัปดาห์ รายการซื้อของอัจฉริยะ และโหมดทำอาหารแบบทีละขั้นตอน',
+    hero_cta_play: 'ดาวน์โหลดที่ Google Play',
+    hero_cta_soon: 'App Store — เร็วๆ นี้',
+    stat_recipes: 'สูตรอาหาร', stat_cuisines: 'ครัว', stat_languages: 'ภาษา',
+    features_eyebrow: 'ฟีเจอร์',
+    features_title: 'ทุกสิ่งที่คุณต้องการในครัว',
+    features_subtitle: 'จากการค้นพบสู่โต๊ะอาหาร — แอปเดียว ทุกขั้นตอน',
+    f_discover_t: 'ค้นพบ', f_discover_d: 'เรียกดูสูตรอาหารตามครัว หมวดหมู่ หรืออารมณ์',
+    f_planner_t: 'วางแผนมื้ออาหารรายสัปดาห์', f_planner_d: 'วางแผนมื้ออาหารทั้งสัปดาห์ในไม่กี่วินาที',
+    f_shopping_t: 'รายการซื้อของอัจฉริยะ', f_shopping_d: 'จัดระเบียบวัตถุดิบอัตโนมัติจากแผนของคุณ',
+    f_cooking_t: 'โหมดทำอาหาร', f_cooking_d: 'คำแนะนำทีละขั้นตอนแบบไม่ต้องแตะหน้าจอขณะทำอาหาร',
+    f_favorites_t: 'รายการโปรดและคอลเลกชัน', f_favorites_d: 'บันทึกสูตรอาหารและสร้างตำราอาหารของคุณเอง',
+    f_diet_t: 'ตัวกรองอาหาร', f_diet_d: 'มังสวิรัติ วีแกน ไม่มีกลูเตน และอื่นๆ',
+    f_lang_t: '15 ภาษา', f_lang_d: 'ทุกสูตรอาหารแปลครบถ้วน — เสมอ',
+    f_dark_t: 'โหมดมืด', f_dark_d: 'ทำอาหารได้อย่างสบายตาทั้งกลางวันและกลางคืน',
+    languages_eyebrow: 'การแปลภาษา',
+    languages_title: 'พูดภาษาของคุณ',
+    languages_subtitle: 'ทุกสูตรอาหาร — ชื่อ วัตถุดิบ และทุกขั้นตอน — แปลครบถ้วนโดยคน ไม่ใช่การเดาของเครื่องจักร',
+    cuisines_eyebrow: 'รอบโลก',
+    cuisines_title: '21 ครัว แอปเดียว',
+    cuisines_subtitle: 'จากอาหารข้างทางสู่ครัวราชสำนัก',
+    gallery_title: 'ดูใกล้ๆ อีกนิด',
+    premium_eyebrow: 'เริ่มต้นฟรี',
+    premium_title: 'ทำอาหารฟรี ปลดล็อกทั้งหมดด้วย Premium',
+    premium_desc: 'สูตรอาหารจำนวนมากฟรีตลอดไปในทุกครัว อัปเกรดเป็น GastroGlobe Premium เพื่อปลดล็อกคลังสูตรอาหารทั้ง 405 สูตร คอลเลกชันครัวราชสำนัก และทุกสิ่งที่จะเพิ่มในอนาคต',
+    why_eyebrow: 'ทำไมต้อง GastroGlobe', why_title: 'ไม่ใช่แค่แอปสูตรอาหารทั่วไป', why_subtitle: 'สิ่งที่แอปทำอาหารส่วนใหญ่ไม่ทำ',
+    w_translate_t: 'แปลจริง ไม่ใช่การเดา', w_translate_d: 'ทุกสูตรอาหาร — ชื่อ วัตถุดิบ และทุกขั้นตอน — แปลโดยคนครบทั้ง 15 ภาษา ไม่ใช่แปลด้วยเครื่อง ไม่ใช่แค่ภาษาอังกฤษที่มีเมนูแปล',
+    w_breadth_t: 'ความหลากหลายจริง ไม่ใช่แค่ชิมลอง', w_breadth_d: '21 ครัวเต็มรูปแบบ รวมถึงคอลเลกชันครัวราชสำนักหายากที่แทบไม่มีแอปไหนแตะต้อง ไม่ใช่สูตร "ทั่วโลก" แค่ 3 สูตรที่แปะไว้ในเมนูตะวันตก',
+    w_noads_t: 'ไม่มีโฆษณารบกวน', w_noads_d: 'ประสบการณ์ทำอาหารที่สะอาดและตรงจุด ไม่ใช่ฟีดที่ถูกขัดจังหวะด้วยโฆษณาระหว่างแต่ละสูตร',
+    w_workflow_t: 'ออกแบบมาเพื่อทำอาหารจริงๆ', w_workflow_d: 'ตัววางแผนมื้ออาหาร รายการซื้อของ และโหมดทำอาหารทำงานร่วมกัน ไม่ใช่แค่รายการสูตรอาหารให้เลื่อนดู',
+    footer_privacy: 'นโยบายความเป็นส่วนตัว', footer_terms: 'ข้อกำหนดการใช้งาน', footer_contact: 'ติดต่อเรา',
+    footer_dev: 'แอปอื่นๆ จาก stmatrix', footer_tagline: 'อาหารทั่วโลก แอปเดียว',
+  },
+  ar: {
+    nav_download: 'حمّل التطبيق',
+    hero_eyebrow: 'تطبيق مطابخ العالم',
+    hero_title: 'اكتشف مطابخ العالم.',
+    hero_subtitle: 'أكثر من 405 وصفة من 21 مطبخًا، مترجمة إلى 15 لغة — مع مخطط وجبات أسبوعي، وقوائم تسوق ذكية، ووضع طهي خطوة بخطوة.',
+    hero_cta_play: 'احصل عليه من Google Play',
+    hero_cta_soon: 'App Store — قريبًا',
+    stat_recipes: 'وصفة', stat_cuisines: 'مطبخ', stat_languages: 'لغة',
+    features_eyebrow: 'الميزات',
+    features_title: 'كل ما تحتاجه في المطبخ',
+    features_subtitle: 'من الاكتشاف إلى المائدة — تطبيق واحد، في كل خطوة.',
+    f_discover_t: 'اكتشف', f_discover_d: 'تصفّح الوصفات حسب المطبخ أو الفئة أو المزاج.',
+    f_planner_t: 'مخطط الوجبات الأسبوعي', f_planner_d: 'خطّط لأسبوع كامل من الوجبات في ثوانٍ.',
+    f_shopping_t: 'قائمة تسوق ذكية', f_shopping_d: 'مكونات منظمة تلقائيًا من خطتك.',
+    f_cooking_t: 'وضع الطهي', f_cooking_d: 'إرشادات خطوة بخطوة دون لمس الشاشة أثناء الطهي.',
+    f_favorites_t: 'المفضلة والمجموعات', f_favorites_d: 'احفظ الوصفات وأنشئ كتاب طبخك الخاص.',
+    f_diet_t: 'فلاتر غذائية', f_diet_d: 'نباتي، نباتي صرف، خالٍ من الغلوتين والمزيد.',
+    f_lang_t: '15 لغة', f_lang_d: 'كل وصفة مترجمة بالكامل — دائمًا.',
+    f_dark_t: 'الوضع الداكن', f_dark_d: 'اطبخ بارتياح، نهارًا أو ليلًا.',
+    languages_eyebrow: 'الترجمة المحلية',
+    languages_title: 'يتحدث لغتك',
+    languages_subtitle: 'كل وصفة — العنوان والمكونات وكل خطوة — مترجمة بالكامل، وليست تخمينًا آليًا.',
+    cuisines_eyebrow: 'حول العالم',
+    cuisines_title: '21 مطبخًا، تطبيق واحد',
+    cuisines_subtitle: 'من أكلات الشارع إلى مطابخ القصور الملكية.',
+    gallery_title: 'نظرة عن قرب',
+    premium_eyebrow: 'ابدأ مجانًا',
+    premium_title: 'اطبخ مجانًا. افتح الأطلس الكامل مع Premium.',
+    premium_desc: 'مجموعة سخية من الوصفات مجانية دائمًا في كل مطبخ. قم بالترقية إلى GastroGlobe Premium لفتح مكتبة 405 وصفة كاملة، ومجموعة المطبخ الملكي، وكل إضافة مستقبلية.',
+    why_eyebrow: 'لماذا GastroGlobe', why_title: 'ليس مجرد تطبيق وصفات آخر', why_subtitle: 'إليك ما لا تفعله معظم تطبيقات الطبخ.',
+    w_translate_t: 'ترجمة حقيقية، لا تخمين', w_translate_d: 'كل وصفة — العنوان والمكونات وكل خطوة — مترجمة بالكامل يدويًا إلى 15 لغة. ليست مترجمة آليًا، وليست بالإنجليزية فقط مع قائمة مترجمة.',
+    w_breadth_t: 'تنوع حقيقي، لا تذوّق سريع', w_breadth_d: '21 مطبخًا كاملاً — بما في ذلك مجموعة نادرة من المطبخ الملكي لا يتطرق إليها أي تطبيق تقريبًا. ليست ثلاث وصفات "عالمية" مضافة إلى قائمة غربية.',
+    w_noads_t: 'بلا إعلانات مزعجة', w_noads_d: 'تجربة طهي نظيفة ومركزة — ليست خلاصة تقاطعها الإعلانات بين كل وصفة.',
+    w_workflow_t: 'مصمم للطهي فعليًا', w_workflow_d: 'يعمل مخطط الوجبات وقائمة التسوق ووضع الطهي معًا — وليس مجرد قائمة وصفات للتمرير عبرها.',
+    footer_privacy: 'سياسة الخصوصية', footer_terms: 'شروط الخدمة', footer_contact: 'اتصل بنا',
+    footer_dev: 'تطبيقات أخرى من stmatrix', footer_tagline: 'مطابخ العالم، تطبيق واحد.',
+  },
+  fil: {
+    nav_download: 'Kunin ang App',
+    hero_eyebrow: 'World Cuisine App',
+    hero_title: 'Tuklasin ang mga kusina ng mundo.',
+    hero_subtitle: '405+ recipe mula sa 21 kusina, isinalin sa 15 wika — may weekly meal planner, smart shopping list, at step-by-step cooking mode.',
+    hero_cta_play: 'Kunin sa Google Play',
+    hero_cta_soon: 'App Store — malapit na',
+    stat_recipes: 'Recipe', stat_cuisines: 'Kusina', stat_languages: 'Wika',
+    features_eyebrow: 'Mga Feature',
+    features_title: 'Lahat ng kailangan mo sa kusina',
+    features_subtitle: 'Mula sa pagtuklas hanggang sa hapag-kainan — isang app, bawat hakbang.',
+    f_discover_t: 'Tuklasin', f_discover_d: 'Mag-browse ng recipe ayon sa kusina, kategorya, o mood.',
+    f_planner_t: 'Weekly Meal Planner', f_planner_d: 'Magplano ng isang buong linggong pagkain sa ilang segundo.',
+    f_shopping_t: 'Smart Shopping List', f_shopping_d: 'Awtomatikong nakaayos na sangkap mula sa iyong plano.',
+    f_cooking_t: 'Cooking Mode', f_cooking_d: 'Hands-free, step-by-step na gabay habang nagluluto.',
+    f_favorites_t: 'Mga Paborito at Koleksyon', f_favorites_d: 'I-save ang mga recipe at gumawa ng sarili mong cookbook.',
+    f_diet_t: 'Dietary Filters', f_diet_d: 'Vegetarian, vegan, gluten-free, at higit pa.',
+    f_lang_t: '15 Wika', f_lang_d: 'Bawat recipe, lubusang isinalin — palagi.',
+    f_dark_t: 'Dark Mode', f_dark_d: 'Magluto nang komportable, araw man o gabi.',
+    languages_eyebrow: 'Localization',
+    languages_title: 'Nagsasalita ng iyong wika',
+    languages_subtitle: 'Bawat recipe — pamagat, sangkap, at bawat hakbang — lubusang isinalin, hindi hula ng makina.',
+    cuisines_eyebrow: 'Sa Buong Mundo',
+    cuisines_title: '21 kusina, isang app',
+    cuisines_subtitle: 'Mula sa street food hanggang sa royal palace kitchen.',
+    gallery_title: 'Isang mas malapit na tingin',
+    premium_eyebrow: 'Libreng simula',
+    premium_title: 'Magluto nang libre. I-unlock ang buong atlas gamit ang Premium.',
+    premium_desc: 'Isang malawak na set ng recipe ang laging libre sa bawat kusina. Mag-upgrade sa GastroGlobe Premium para i-unlock ang buong 405-recipe library, ang Royal Palace collection, at bawat susunod na idadagdag.',
+    why_eyebrow: 'Bakit GastroGlobe', why_title: 'Hindi lang basta recipe app', why_subtitle: 'Ito ang hindi ginagawa ng karamihan sa mga cooking app.',
+    w_translate_t: 'Tunay na pagsasalin, hindi hula', w_translate_d: 'Bawat recipe — pamagat, sangkap, at bawat hakbang — lubusang isinalin nang manu-mano sa 15 wika. Hindi hula ng makina, hindi lang Ingles na may isinaling menu.',
+    w_breadth_t: 'Tunay na saklaw, hindi tikim lang', w_breadth_d: '21 kumpletong kusina — kasama ang bihirang koleksyon ng Royal Palace na halos walang app ang humipo. Hindi tatlong recipe na "pandaigdig" na idinugtong sa Western menu.',
+    w_noads_t: 'Walang nakakagambalang ads', w_noads_d: 'Malinis at nakatuong karanasan sa pagluluto — hindi feed na may ads sa pagitan ng bawat recipe.',
+    w_workflow_t: 'Ginawa para talagang magluto', w_workflow_d: 'Magkasamang gumagana ang meal planner, shopping list, at cooking mode — hindi lang listahan ng recipe na i-scroll.',
+    footer_privacy: 'Patakaran sa Privacy', footer_terms: 'Mga Tuntunin ng Serbisyo', footer_contact: 'Makipag-ugnayan',
+    footer_dev: 'Higit pang app mula sa stmatrix', footer_tagline: 'World cuisine, isang app.',
+  },
+};
+
+const RTL = new Set(['ar']);
+
+function applyLang(code) {
+  const dict = I18N[code] || I18N.en;
+  document.documentElement.lang = code;
+  document.documentElement.dir = RTL.has(code) ? 'rtl' : 'ltr';
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (dict[key]) el.textContent = dict[key];
+  });
+
+  const featGrid = document.getElementById('featGrid');
+  featGrid.innerHTML = FEATURES.map(f => `
+    <div class="featCard">
+      <div class="featIcon">${f.icon}</div>
+      <h3>${dict['f_' + f.k + '_t']}</h3>
+      <p>${dict['f_' + f.k + '_d']}</p>
+    </div>
+  `).join('');
+
+  const whyGrid = document.getElementById('whyGrid');
+  whyGrid.innerHTML = WHY.map(w => `
+    <div class="whyCard">
+      <span class="num">${w.num}</span>
+      <h3>${dict['w_' + w.k + '_t']}</h3>
+      <p>${dict['w_' + w.k + '_d']}</p>
+    </div>
+  `).join('');
+
+  const cuisineNames = CUISINE_NAMES[code] || CUISINE_NAMES.en;
+  const cuisineGrid = document.getElementById('cuisineGrid');
+  cuisineGrid.innerHTML = CUISINES.map(c => `
+    <div class="cuisineChip">
+      <div class="flag">${c.flag}</div>
+      <span>${cuisineNames[c.key] || CUISINE_NAMES.en[c.key]}</span>
+    </div>
+  `).join('');
+
+  localStorage.setItem('gg_site_lang', code);
+}
+
+function initLangSwitch() {
+  const sel = document.getElementById('langSwitch');
+  sel.innerHTML = LANGS.map(l => `<option value="${l.code}">${l.flag} ${l.label}</option>`).join('');
+
+  const langGrid = document.getElementById('langGrid');
+  langGrid.innerHTML = LANGS.map(l => `
+    <div class="langChip"><span class="flag">${l.flag}</span>${l.label}</div>
+  `).join('');
+
+  let initial = localStorage.getItem('gg_site_lang');
+  if (!initial) {
+    const nav = (navigator.language || 'en').toLowerCase();
+    if (nav.startsWith('es-mx')) initial = 'es-MX';
+    else {
+      const short = nav.split('-')[0];
+      initial = LANGS.some(l => l.code === short) ? short : 'en';
+    }
+  }
+  sel.value = initial;
+  applyLang(initial);
+
+  sel.addEventListener('change', () => applyLang(sel.value));
+}
+
+document.getElementById('footYear').textContent = '© ' + new Date().getFullYear() + ' GastroGlobe';
+initLangSwitch();
+</script>
+</body>
+</html>
